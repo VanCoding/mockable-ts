@@ -2,8 +2,20 @@
   "name": "mockable-ts",
   "version": "1.0.0",
   "type": "module",
+  "author": "VanCoding",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "homepage": "https://github.com/VanCoding/mockable-ts",
+  "keywords": [
+    "mock",
+    "mocking",
+    "test",
+    "testing"
+  ],
   "scripts": {
-    "test": "ts-node ./tests/prod-mode.ts && NODE_ENV=test ts-node ./tests/test-mode.ts"
+    "test": "ts-node ./tests/prod-mode.ts && NODE_ENV=test ts-node ./tests/test-mode.ts",
+    "build": "tsc",
+    "deploy": "npm test && npm run build && npm publish"
   },
   "dependencies": {
     "mutable-proxy": "^1.0.0"
