@@ -1,0 +1,10 @@
+/src
+/.envrc
+/flake.nix
+/flake.lock
+/pnpm-lock.yaml
+/tsconfig.json
+/.direnv
+/tests/
+/tsconfig.json
+/readme.md
