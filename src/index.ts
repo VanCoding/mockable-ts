@@ -1,10 +1,12 @@
 /// <reference path="./types.d.ts" />
 import makeProxy from "mutable-proxy";
 
-const mockables = new WeakMap<
-  object,
-  { default: object; setTarget: (target: object) => void }
->();
+type MockableEntry<T extends object> = {
+  default: T;
+  setTarget: (target: T) => void;
+};
+
+const mockables = new WeakMap<object, MockableEntry<any>>();
 
 const mocked = new Set<object>();
 
@@ -21,16 +23,23 @@ export const mockable =
         return proxy as T;
       };
 
-export const mock = <T extends object>(mockable: T, mock: T) => {
+const getEntry = <T extends object>(mockable: T) => {
   const entry = mockables.get(mockable);
   if (!entry) throw new Error("value is not mockable");
+  return entry;
+};
+
+export const override = <T extends object>(mockable: T, mock: T) => {
+  const entry = getEntry(mockable);
   entry.setTarget(mock);
   mocked.add(mockable);
 };
 
+export const original = <T extends object>(mockable: T): T =>
+  getEntry(mockable)!.default;
+
 export const reset = <T extends object>(mockable: T) => {
-  const entry = mockables.get(mockable);
-  if (!entry) throw new Error("value is not mockable");
+  const entry = getEntry(mockable);
   entry.setTarget(entry.default);
   mocked.delete(mockable);
 };
